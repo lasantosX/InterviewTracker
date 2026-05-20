@@ -3,4 +3,5 @@
   <Project Path="InterviewTracker.Business/InterviewTracker.Business.csproj" />
   <Project Path="InterviewTracker.Data/InterviewTracker.Data.csproj" />
   <Project Path="InterviewTracker.Domain/InterviewTracker.Domain.csproj" />
+  <Project Path="InterviewTracker.Tests/InterviewTracker.Tests.csproj" />
 </Solution>
