@@ -1,10 +1,12 @@
-InterviewTracker
+# InterviewTracker
 
 Enterprise-style interview tracking system built with ASP.NET Core .NET 8, Entity Framework Core, SQL Server, Swagger/OpenAPI, layered architecture, stored procedures, and unit testing.
 
 The project is designed to manage companies, recruiters, interviews, interview statuses, salary expectations, and dashboard reporting while following clean separation of concerns across multiple application layers.
 
-Architecture
+## Architecture
+
+```text
 InterviewTracker.Api
     Controllers
     Program.cs
@@ -128,8 +130,6 @@ Interview reminders
 Screenshots
 
 Add Swagger and dashboard screenshots here.
-
-Example:
 
 ![Swagger](docs/images/swagger.png)
 Project Goal
