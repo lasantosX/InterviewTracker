@@ -131,7 +131,10 @@ Screenshots
 
 Add Swagger and dashboard screenshots here.
 
-![Swagger](docs/images/swagger.png)
+Example:
+
+### Swagger Endpoints
+![Swagger Endpoints](docs/images/swagger-endpoints.png)
 Project Goal
 
 The purpose of this project is to demonstrate enterprise backend development practices using modern .NET technologies, layered architecture, repository patterns, testing strategies, SQL Server integrations, and real-world workflow modeling.
