@@ -1,10 +1,12 @@
-InterviewTracker
+# InterviewTracker
 
 Enterprise-style interview tracking system built with ASP.NET Core .NET 8, Entity Framework Core, SQL Server, Swagger/OpenAPI, layered architecture, stored procedures, and unit testing.
 
 The project is designed to manage companies, recruiters, interviews, interview statuses, salary expectations, and dashboard reporting while following clean separation of concerns across multiple application layers.
 
-Architecture
+## Architecture
+
+```text
 InterviewTracker.Api
     Controllers
     Program.cs
@@ -136,3 +138,21 @@ Example:
 Project Goal
 
 The purpose of this project is to demonstrate enterprise backend development practices using modern .NET technologies, layered architecture, repository patterns, testing strategies, SQL Server integrations, and real-world workflow modeling.
+
+## Authentication
+
+The API includes JWT authentication.
+
+Use the login endpoint to generate a token:
+
+| Method | Endpoint |
+|---|---|
+| POST | `/api/Auth/login` |
+
+Sample request:
+
+```json
+{
+  "username": "admin",
+  "password": "password"
+}
