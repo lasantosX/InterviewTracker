@@ -15,11 +15,18 @@ public class InterviewService : IInterviewService
         _interviewRepository = interviewRepository;
     }
 
-    public async Task<PagedResult<Interview>> GetInterviewsAsync(PaginationRequest request)
+    public async Task<PagedResult<Interview>> GetInterviewsAsync(InterviewFilterRequest request)
     {
-        var (items, totalCount) = await _interviewRepository.GetPagedAsync(
-            request.PageNumber,
-            request.PageSize);
+        var filter = new InterviewFilter
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            Status = request.Status,
+            CompanyId = request.CompanyId,
+            RecruiterId = request.RecruiterId
+        };
+
+        var (items, totalCount) = await _interviewRepository.GetFilteredAsync(filter);
 
         return new PagedResult<Interview>
         {

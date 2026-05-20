@@ -76,7 +76,7 @@ public class InterviewsControllerTests
         var mockService = new Mock<IInterviewService>();
 
         mockService
-            .Setup(x => x.GetInterviewsAsync(It.IsAny<PaginationRequest>()))
+            .Setup(x => x.GetInterviewsAsync(It.IsAny<InterviewFilterRequest>()))
             .ReturnsAsync(new PagedResult<Interview>
             {
                 Items = new List<Interview>
@@ -91,7 +91,7 @@ public class InterviewsControllerTests
 
         var controller = new InterviewsController(mockService.Object);
 
-        var result = await controller.GetInterviews(new PaginationRequest
+        var result = await controller.GetInterviews(new InterviewFilterRequest
         {
             PageNumber = 1,
             PageSize = 10

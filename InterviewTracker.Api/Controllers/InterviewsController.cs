@@ -20,7 +20,7 @@ public class InterviewsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<PagedResult<Interview>>> GetInterviews(
-    [FromQuery] PaginationRequest request)
+    [FromQuery] InterviewFilterRequest request)
     {
         var interviews = await _interviewService.GetInterviewsAsync(request);
 
