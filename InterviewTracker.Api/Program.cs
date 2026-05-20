@@ -25,6 +25,8 @@ builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 builder.Services.AddScoped<IInterviewService, InterviewService>();
+builder.Services.AddScoped<IDashboardSqlQuery, DashboardSqlQuery>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 
 var app = builder.Build();
 

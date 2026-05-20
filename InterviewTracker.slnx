@@ -2,6 +2,10 @@
   <Project Path="InterviewTracker.Api/InterviewTracker.Api.csproj" />
   <Project Path="InterviewTracker.Business/InterviewTracker.Business.csproj" />
   <Project Path="InterviewTracker.Data/InterviewTracker.Data.csproj" />
+  <Project Path="InterviewTracker.Database/InterviewTracker.Database.sqlproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="InterviewTracker.Domain/InterviewTracker.Domain.csproj" />
   <Project Path="InterviewTracker.Tests/InterviewTracker.Tests.csproj" />
 </Solution>
