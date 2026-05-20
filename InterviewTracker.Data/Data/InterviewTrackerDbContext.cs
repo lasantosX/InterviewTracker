@@ -14,6 +14,7 @@ public class InterviewTrackerDbContext : DbContext
     public DbSet<Company> Companies => Set<Company>();
     public DbSet<Recruiter> Recruiters => Set<Recruiter>();
     public DbSet<Interview> Interviews => Set<Interview>();
+    public DbSet<DashboardSummary> DashboardSummaries => Set<DashboardSummary>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -74,6 +75,11 @@ public class InterviewTrackerDbContext : DbContext
                 .WithMany(x => x.Interviews)
                 .HasForeignKey(x => x.RecruiterId)
                 .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<DashboardSummary>(entity =>
+        {
+            entity.HasNoKey();
         });
     }
 }
