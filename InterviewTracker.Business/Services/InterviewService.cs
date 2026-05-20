@@ -15,9 +15,19 @@ public class InterviewService : IInterviewService
         _interviewRepository = interviewRepository;
     }
 
-    public async Task<IEnumerable<Interview>> GetInterviewsAsync()
+    public async Task<PagedResult<Interview>> GetInterviewsAsync(PaginationRequest request)
     {
-        return await _interviewRepository.GetAllAsync();
+        var (items, totalCount) = await _interviewRepository.GetPagedAsync(
+            request.PageNumber,
+            request.PageSize);
+
+        return new PagedResult<Interview>
+        {
+            Items = items,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<Interview?> GetInterviewByIdAsync(int id)

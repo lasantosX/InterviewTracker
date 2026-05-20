@@ -64,4 +64,48 @@ public class InterviewRepositoryTests
 
         Assert.True(result);
     }
+
+    [Fact]
+    public async Task GetPagedAsync_ReturnsPagedInterviewsOrderedByCreatedAtDescending()
+    {
+        using var context = CreateDbContext();
+
+        var company = new Company { Name = "TechNova" };
+        context.Companies.Add(company);
+        await context.SaveChangesAsync();
+
+        context.Interviews.AddRange(
+            new Interview
+            {
+                RoleTitle = "Older Interview",
+                Status = "Applied",
+                CompanyId = company.Id,
+                CreatedAt = DateTime.UtcNow.AddDays(-2)
+            },
+            new Interview
+            {
+                RoleTitle = "Newest Interview",
+                Status = "Applied",
+                CompanyId = company.Id,
+                CreatedAt = DateTime.UtcNow
+            },
+            new Interview
+            {
+                RoleTitle = "Middle Interview",
+                Status = "Applied",
+                CompanyId = company.Id,
+                CreatedAt = DateTime.UtcNow.AddDays(-1)
+            }
+        );
+
+        await context.SaveChangesAsync();
+
+        var repository = new InterviewRepository(context);
+
+        var result = await repository.GetPagedAsync(1, 2);
+
+        Assert.Equal(3, result.TotalCount);
+        Assert.Equal(2, result.Items.Count());
+        Assert.Equal("Newest Interview", result.Items.First().RoleTitle);
+    }
 }
