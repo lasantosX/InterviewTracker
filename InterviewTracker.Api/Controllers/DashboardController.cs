@@ -1,9 +1,11 @@
 ﻿using InterviewTracker.Business.Interfaces;
 using InterviewTracker.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InterviewTracker.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DashboardController : ControllerBase

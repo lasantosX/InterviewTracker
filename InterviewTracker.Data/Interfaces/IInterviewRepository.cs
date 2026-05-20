@@ -9,4 +9,5 @@ public interface IInterviewRepository
     Task<Interview> AddAsync(Interview interview);
     Task<bool> CompanyExistsAsync(int companyId);
     Task<bool> RecruiterExistsAsync(int recruiterId);
+    Task<bool> UpdateAsync(Interview interview);
 }

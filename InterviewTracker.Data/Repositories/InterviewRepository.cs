@@ -56,4 +56,10 @@ public class InterviewRepository : IInterviewRepository
     {
         return await _context.Recruiters.AnyAsync(x => x.Id == recruiterId);
     }
+
+    public async Task<bool> UpdateAsync(Interview interview)
+    {
+        _context.Interviews.Update(interview);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

@@ -56,4 +56,33 @@ public class CompanyRepositoryTests
         Assert.Equal(2, result.Items.Count());
         Assert.Equal("A Company", result.Items.First().Name);
     }
+
+    [Fact]
+    public async Task UpdateAsync_UpdatesCompany()
+    {
+        using var context = CreateDbContext();
+
+        var company = new Company
+        {
+            Name = "Old Company",
+            Location = "Old Location"
+        };
+
+        context.Companies.Add(company);
+        await context.SaveChangesAsync();
+
+        var repository = new CompanyRepository(context);
+
+        company.Name = "Updated Company";
+        company.Location = "Remote";
+
+        var result = await repository.UpdateAsync(company);
+
+        var updatedCompany = await context.Companies.FindAsync(company.Id);
+
+        Assert.True(result);
+        Assert.NotNull(updatedCompany);
+        Assert.Equal("Updated Company", updatedCompany!.Name);
+        Assert.Equal("Remote", updatedCompany.Location);
+    }
 }

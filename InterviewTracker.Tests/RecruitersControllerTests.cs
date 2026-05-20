@@ -83,4 +83,42 @@ public class RecruitersControllerTests
         Assert.Equal(2, pagedResult.TotalCount);
         Assert.Equal(2, pagedResult.Items.Count());
     }
+
+    [Fact]
+    public async Task UpdateRecruiter_WhenRecruiterDoesNotExist_ReturnsNotFound()
+    {
+        var mockService = new Mock<IRecruiterService>();
+
+        mockService
+            .Setup(x => x.UpdateRecruiterAsync(999, It.IsAny<UpdateRecruiterRequest>()))
+            .ReturnsAsync((false, "Recruiter does not exist."));
+
+        var controller = new RecruitersController(mockService.Object);
+
+        var result = await controller.UpdateRecruiter(999, new UpdateRecruiterRequest
+        {
+            FullName = "Updated Recruiter"
+        });
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task UpdateRecruiter_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<IRecruiterService>();
+
+        mockService
+            .Setup(x => x.UpdateRecruiterAsync(1, It.IsAny<UpdateRecruiterRequest>()))
+            .ReturnsAsync((true, null));
+
+        var controller = new RecruitersController(mockService.Object);
+
+        var result = await controller.UpdateRecruiter(1, new UpdateRecruiterRequest
+        {
+            FullName = "Updated Recruiter"
+        });
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }

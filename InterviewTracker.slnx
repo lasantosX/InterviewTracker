@@ -5,7 +5,7 @@
   <Project Path="InterviewTracker.Api/InterviewTracker.Api.csproj" />
   <Project Path="InterviewTracker.Business/InterviewTracker.Business.csproj" />
   <Project Path="InterviewTracker.Data/InterviewTracker.Data.csproj" />
-  <Project Path="InterviewTracker.Database/InterviewTracker.Database.sqlproj">
+  <Project Path="InterviewTracker.Database/InterviewTracker.Database.sqlproj" Id="73d07f24-f334-4140-a9d9-0b23cc7a9c95">
     <Build />
     <Deploy />
   </Project>

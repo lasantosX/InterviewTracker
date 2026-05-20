@@ -77,4 +77,42 @@ public class CompaniesControllerTests
         Assert.Equal(1, pagedResult.PageNumber);
         Assert.Equal(10, pagedResult.PageSize);
     }
+
+    [Fact]
+    public async Task UpdateCompany_WhenCompanyDoesNotExist_ReturnsNotFound()
+    {
+        var mockService = new Mock<ICompanyService>();
+
+        mockService
+            .Setup(x => x.UpdateCompanyAsync(999, It.IsAny<UpdateCompanyRequest>()))
+            .ReturnsAsync((false, "Company does not exist."));
+
+        var controller = new CompaniesController(mockService.Object);
+
+        var result = await controller.UpdateCompany(999, new UpdateCompanyRequest
+        {
+            Name = "Updated Company"
+        });
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task UpdateCompany_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<ICompanyService>();
+
+        mockService
+            .Setup(x => x.UpdateCompanyAsync(1, It.IsAny<UpdateCompanyRequest>()))
+            .ReturnsAsync((true, null));
+
+        var controller = new CompaniesController(mockService.Object);
+
+        var result = await controller.UpdateCompany(1, new UpdateCompanyRequest
+        {
+            Name = "Updated Company"
+        });
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }

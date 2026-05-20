@@ -62,4 +62,60 @@ public class CompanyServiceTests
         Assert.Equal(1, result.PageNumber);
         Assert.Equal(10, result.PageSize);
     }
+
+    [Fact]
+    public async Task UpdateCompanyAsync_WhenCompanyDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<ICompanyRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(999))
+            .ReturnsAsync((Company?)null);
+
+        var service = new CompanyService(mockRepository.Object);
+
+        var result = await service.UpdateCompanyAsync(999, new UpdateCompanyRequest
+        {
+            Name = "Updated Company"
+        });
+
+        Assert.False(result.Success);
+        Assert.Equal("Company does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task UpdateCompanyAsync_WhenCompanyExists_UpdatesCompany()
+    {
+        var mockRepository = new Mock<ICompanyRepository>();
+
+        var company = new Company
+        {
+            Id = 1,
+            Name = "Old Company"
+        };
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(company);
+
+        mockRepository
+            .Setup(x => x.UpdateAsync(It.IsAny<Company>()))
+            .ReturnsAsync(true);
+
+        var service = new CompanyService(mockRepository.Object);
+
+        var result = await service.UpdateCompanyAsync(1, new UpdateCompanyRequest
+        {
+            Name = "Updated Company",
+            Website = "https://example.com",
+            Location = "Remote"
+        });
+
+        Assert.True(result.Success);
+        Assert.Equal("Updated Company", company.Name);
+        Assert.Equal("https://example.com", company.Website);
+        Assert.Equal("Remote", company.Location);
+
+        mockRepository.Verify(x => x.UpdateAsync(company), Times.Once);
+    }
 }

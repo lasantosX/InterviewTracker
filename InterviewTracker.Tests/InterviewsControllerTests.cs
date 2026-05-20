@@ -103,4 +103,46 @@ public class InterviewsControllerTests
         Assert.Equal(2, pagedResult.TotalCount);
         Assert.Equal(2, pagedResult.Items.Count());
     }
+
+    [Fact]
+    public async Task UpdateInterview_WhenBusinessValidationFails_ReturnsBadRequest()
+    {
+        var mockService = new Mock<IInterviewService>();
+
+        mockService
+            .Setup(x => x.UpdateInterviewAsync(999, It.IsAny<UpdateInterviewRequest>()))
+            .ReturnsAsync((false, "Interview does not exist."));
+
+        var controller = new InterviewsController(mockService.Object);
+
+        var result = await controller.UpdateInterview(999, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Applied",
+            CompanyId = 1
+        });
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task UpdateInterview_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<IInterviewService>();
+
+        mockService
+            .Setup(x => x.UpdateInterviewAsync(1, It.IsAny<UpdateInterviewRequest>()))
+            .ReturnsAsync((true, null));
+
+        var controller = new InterviewsController(mockService.Object);
+
+        var result = await controller.UpdateInterview(1, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Technical Interview",
+            CompanyId = 1
+        });
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }

@@ -46,4 +46,20 @@ public class CompanyService : ICompanyService
 
         return await _companyRepository.AddAsync(company);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> UpdateCompanyAsync(int id, UpdateCompanyRequest request)
+    {
+        var company = await _companyRepository.GetByIdAsync(id);
+
+        if (company is null)
+            return (false, "Company does not exist.");
+
+        company.Name = request.Name;
+        company.Website = request.Website;
+        company.Location = request.Location;
+
+        await _companyRepository.UpdateAsync(company);
+
+        return (true, null);
+    }
 }
