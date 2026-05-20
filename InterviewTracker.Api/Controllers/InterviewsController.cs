@@ -1,0 +1,51 @@
+﻿using InterviewTracker.Business.Dtos;
+using InterviewTracker.Business.Interfaces;
+using InterviewTracker.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace InterviewTracker.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class InterviewsController : ControllerBase
+{
+    private readonly IInterviewService _interviewService;
+
+    public InterviewsController(IInterviewService interviewService)
+    {
+        _interviewService = interviewService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Interview>>> GetInterviews()
+    {
+        var interviews = await _interviewService.GetInterviewsAsync();
+
+        return Ok(interviews);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Interview>> GetInterviewById(int id)
+    {
+        var interview = await _interviewService.GetInterviewByIdAsync(id);
+
+        if (interview is null)
+            return NotFound();
+
+        return Ok(interview);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Interview>> CreateInterview(CreateInterviewRequest request)
+    {
+        var result = await _interviewService.CreateInterviewAsync(request);
+
+        if (!result.Success)
+            return BadRequest(result.ErrorMessage);
+
+        return CreatedAtAction(
+            nameof(GetInterviewById),
+            new { id = result.Interview!.Id },
+            result.Interview);
+    }
+}

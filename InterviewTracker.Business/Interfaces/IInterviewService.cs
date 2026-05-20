@@ -1,0 +1,13 @@
+﻿using InterviewTracker.Business.Dtos;
+using InterviewTracker.Domain.Models;
+
+namespace InterviewTracker.Business.Interfaces;
+
+public interface IInterviewService
+{
+    Task<IEnumerable<Interview>> GetInterviewsAsync();
+
+    Task<Interview?> GetInterviewByIdAsync(int id);
+
+    Task<(bool Success, string? ErrorMessage, Interview? Interview)> CreateInterviewAsync(CreateInterviewRequest request);
+}
