@@ -121,4 +121,36 @@ public class RecruitersControllerTests
 
         Assert.IsType<NoContentResult>(result);
     }
+
+    [Fact]
+    public async Task DeleteRecruiter_WhenRecruiterDoesNotExist_ReturnsNotFound()
+    {
+        var mockService = new Mock<IRecruiterService>();
+
+        mockService
+            .Setup(x => x.DeleteRecruiterAsync(999))
+            .ReturnsAsync((false, "Recruiter does not exist."));
+
+        var controller = new RecruitersController(mockService.Object);
+
+        var result = await controller.DeleteRecruiter(999);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task DeleteRecruiter_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<IRecruiterService>();
+
+        mockService
+            .Setup(x => x.DeleteRecruiterAsync(1))
+            .ReturnsAsync((true, null));
+
+        var controller = new RecruitersController(mockService.Object);
+
+        var result = await controller.DeleteRecruiter(1);
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }

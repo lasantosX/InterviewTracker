@@ -62,4 +62,17 @@ public class InterviewsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteInterview(int id)
+    {
+        var result = await _interviewService.DeleteInterviewAsync(id);
+
+        if (!result.Success)
+            return NotFound(result.ErrorMessage);
+
+        return NoContent();
+    }
 }

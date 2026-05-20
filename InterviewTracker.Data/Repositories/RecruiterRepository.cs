@@ -46,4 +46,10 @@ public class RecruiterRepository : IRecruiterRepository
         _context.Recruiters.Update(recruiter);
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> DeleteAsync(Recruiter recruiter)
+    {
+        _context.Recruiters.Remove(recruiter);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

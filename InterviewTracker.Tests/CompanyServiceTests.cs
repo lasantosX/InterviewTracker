@@ -118,4 +118,49 @@ public class CompanyServiceTests
 
         mockRepository.Verify(x => x.UpdateAsync(company), Times.Once);
     }
+
+    [Fact]
+    public async Task DeleteCompanyAsync_WhenCompanyDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<ICompanyRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(999))
+            .ReturnsAsync((Company?)null);
+
+        var service = new CompanyService(mockRepository.Object);
+
+        var result = await service.DeleteCompanyAsync(999);
+
+        Assert.False(result.Success);
+        Assert.Equal("Company does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task DeleteCompanyAsync_WhenCompanyExists_DeletesCompany()
+    {
+        var mockRepository = new Mock<ICompanyRepository>();
+
+        var company = new Company
+        {
+            Id = 1,
+            Name = "TechNova"
+        };
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(company);
+
+        mockRepository
+            .Setup(x => x.DeleteAsync(company))
+            .ReturnsAsync(true);
+
+        var service = new CompanyService(mockRepository.Object);
+
+        var result = await service.DeleteCompanyAsync(1);
+
+        Assert.True(result.Success);
+
+        mockRepository.Verify(x => x.DeleteAsync(company), Times.Once);
+    }
 }

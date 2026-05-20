@@ -116,4 +116,49 @@ public class RecruiterServiceTests
 
         mockRepository.Verify(x => x.UpdateAsync(recruiter), Times.Once);
     }
+
+    [Fact]
+    public async Task DeleteRecruiterAsync_WhenRecruiterDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IRecruiterRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(999))
+            .ReturnsAsync((Recruiter?)null);
+
+        var service = new RecruiterService(mockRepository.Object);
+
+        var result = await service.DeleteRecruiterAsync(999);
+
+        Assert.False(result.Success);
+        Assert.Equal("Recruiter does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task DeleteRecruiterAsync_WhenRecruiterExists_DeletesRecruiter()
+    {
+        var mockRepository = new Mock<IRecruiterRepository>();
+
+        var recruiter = new Recruiter
+        {
+            Id = 1,
+            FullName = "Jane Recruiter"
+        };
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(recruiter);
+
+        mockRepository
+            .Setup(x => x.DeleteAsync(recruiter))
+            .ReturnsAsync(true);
+
+        var service = new RecruiterService(mockRepository.Object);
+
+        var result = await service.DeleteRecruiterAsync(1);
+
+        Assert.True(result.Success);
+
+        mockRepository.Verify(x => x.DeleteAsync(recruiter), Times.Once);
+    }
 }

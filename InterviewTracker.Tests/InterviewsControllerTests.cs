@@ -145,4 +145,36 @@ public class InterviewsControllerTests
 
         Assert.IsType<NoContentResult>(result);
     }
+
+    [Fact]
+    public async Task DeleteInterview_WhenInterviewDoesNotExist_ReturnsNotFound()
+    {
+        var mockService = new Mock<IInterviewService>();
+
+        mockService
+            .Setup(x => x.DeleteInterviewAsync(999))
+            .ReturnsAsync((false, "Interview does not exist."));
+
+        var controller = new InterviewsController(mockService.Object);
+
+        var result = await controller.DeleteInterview(999);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task DeleteInterview_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<IInterviewService>();
+
+        mockService
+            .Setup(x => x.DeleteInterviewAsync(1))
+            .ReturnsAsync((true, null));
+
+        var controller = new InterviewsController(mockService.Object);
+
+        var result = await controller.DeleteInterview(1);
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }
