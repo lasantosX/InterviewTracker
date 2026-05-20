@@ -12,4 +12,6 @@ public interface IInterviewService
     Task<(bool Success, string? ErrorMessage, Interview? Interview)> CreateInterviewAsync(CreateInterviewRequest request);
 
     Task<(bool Success, string? ErrorMessage)> UpdateInterviewAsync(int id, UpdateInterviewRequest request);
+
+    Task<(bool Success, string? ErrorMessage)> DeleteInterviewAsync(int id);
 }

@@ -85,4 +85,25 @@ public class CompanyRepositoryTests
         Assert.Equal("Updated Company", updatedCompany!.Name);
         Assert.Equal("Remote", updatedCompany.Location);
     }
+
+    [Fact]
+    public async Task DeleteAsync_RemovesCompany()
+    {
+        using var context = CreateDbContext();
+
+        var company = new Company
+        {
+            Name = "TechNova"
+        };
+
+        context.Companies.Add(company);
+        await context.SaveChangesAsync();
+
+        var repository = new CompanyRepository(context);
+
+        var result = await repository.DeleteAsync(company);
+
+        Assert.True(result);
+        Assert.Empty(context.Companies);
+    }
 }

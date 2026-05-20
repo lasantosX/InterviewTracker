@@ -56,4 +56,23 @@ public class CompaniesController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteCompany(int id)
+    {
+        var result = await _companyService.DeleteCompanyAsync(id);
+
+        if (!result.Success)
+        {
+            if (result.ErrorMessage == "Company does not exist.")
+                return NotFound(result.ErrorMessage);
+
+            return BadRequest(result.ErrorMessage);
+        }
+
+        return NoContent();
+    }
 }

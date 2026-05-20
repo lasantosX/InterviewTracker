@@ -56,4 +56,17 @@ public class RecruitersController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteRecruiter(int id)
+    {
+        var result = await _recruiterService.DeleteRecruiterAsync(id);
+
+        if (!result.Success)
+            return NotFound(result.ErrorMessage);
+
+        return NoContent();
+    }
 }

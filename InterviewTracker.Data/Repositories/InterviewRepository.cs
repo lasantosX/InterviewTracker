@@ -62,4 +62,10 @@ public class InterviewRepository : IInterviewRepository
         _context.Interviews.Update(interview);
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> DeleteAsync(Interview interview)
+    {
+        _context.Interviews.Remove(interview);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

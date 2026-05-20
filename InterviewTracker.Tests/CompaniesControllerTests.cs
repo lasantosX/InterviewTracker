@@ -115,4 +115,36 @@ public class CompaniesControllerTests
 
         Assert.IsType<NoContentResult>(result);
     }
+
+    [Fact]
+    public async Task DeleteCompany_WhenCompanyDoesNotExist_ReturnsNotFound()
+    {
+        var mockService = new Mock<ICompanyService>();
+
+        mockService
+            .Setup(x => x.DeleteCompanyAsync(999))
+            .ReturnsAsync((false, "Company does not exist."));
+
+        var controller = new CompaniesController(mockService.Object);
+
+        var result = await controller.DeleteCompany(999);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task DeleteCompany_WhenValid_ReturnsNoContent()
+    {
+        var mockService = new Mock<ICompanyService>();
+
+        mockService
+            .Setup(x => x.DeleteCompanyAsync(1))
+            .ReturnsAsync((true, null));
+
+        var controller = new CompaniesController(mockService.Object);
+
+        var result = await controller.DeleteCompany(1);
+
+        Assert.IsType<NoContentResult>(result);
+    }
 }

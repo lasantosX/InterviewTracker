@@ -105,4 +105,16 @@ public class InterviewService : IInterviewService
 
         return (true, null);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> DeleteInterviewAsync(int id)
+    {
+        var interview = await _interviewRepository.GetByIdAsync(id);
+
+        if (interview is null)
+            return (false, "Interview does not exist.");
+
+        await _interviewRepository.DeleteAsync(interview);
+
+        return (true, null);
+    }
 }

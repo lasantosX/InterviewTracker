@@ -243,4 +243,49 @@ public class InterviewServiceTests
 
         mockRepository.Verify(x => x.UpdateAsync(interview), Times.Once);
     }
+
+    [Fact]
+    public async Task DeleteInterviewAsync_WhenInterviewDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(999))
+            .ReturnsAsync((Interview?)null);
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.DeleteInterviewAsync(999);
+
+        Assert.False(result.Success);
+        Assert.Equal("Interview does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task DeleteInterviewAsync_WhenInterviewExists_DeletesInterview()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        var interview = new Interview
+        {
+            Id = 1,
+            RoleTitle = "Senior .NET Developer"
+        };
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(interview);
+
+        mockRepository
+            .Setup(x => x.DeleteAsync(interview))
+            .ReturnsAsync(true);
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.DeleteInterviewAsync(1);
+
+        Assert.True(result.Success);
+
+        mockRepository.Verify(x => x.DeleteAsync(interview), Times.Once);
+    }
 }

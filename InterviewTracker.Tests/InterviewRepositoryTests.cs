@@ -142,4 +142,31 @@ public class InterviewRepositoryTests
         Assert.Equal("Updated Role", updatedInterview!.RoleTitle);
         Assert.Equal("Technical Interview", updatedInterview.Status);
     }
+
+    [Fact]
+    public async Task DeleteAsync_RemovesInterview()
+    {
+        using var context = CreateDbContext();
+
+        var company = new Company { Name = "TechNova" };
+        context.Companies.Add(company);
+        await context.SaveChangesAsync();
+
+        var interview = new Interview
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Applied",
+            CompanyId = company.Id
+        };
+
+        context.Interviews.Add(interview);
+        await context.SaveChangesAsync();
+
+        var repository = new InterviewRepository(context);
+
+        var result = await repository.DeleteAsync(interview);
+
+        Assert.True(result);
+        Assert.Empty(context.Interviews);
+    }
 }

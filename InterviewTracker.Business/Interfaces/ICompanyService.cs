@@ -12,4 +12,6 @@ public interface ICompanyService
     Task<Company> CreateCompanyAsync(CreateCompanyRequest request);
 
     Task<(bool Success, string? ErrorMessage)> UpdateCompanyAsync(int id, UpdateCompanyRequest request);
+
+    Task<(bool Success, string? ErrorMessage)> DeleteCompanyAsync(int id);
 }

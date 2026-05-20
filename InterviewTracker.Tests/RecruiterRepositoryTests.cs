@@ -85,4 +85,25 @@ public class RecruiterRepositoryTests
         Assert.Equal("Updated Recruiter", updatedRecruiter!.FullName);
         Assert.Equal("updated@example.com", updatedRecruiter.Email);
     }
+
+    [Fact]
+    public async Task DeleteAsync_RemovesRecruiter()
+    {
+        using var context = CreateDbContext();
+
+        var recruiter = new Recruiter
+        {
+            FullName = "Jane Recruiter"
+        };
+
+        context.Recruiters.Add(recruiter);
+        await context.SaveChangesAsync();
+
+        var repository = new RecruiterRepository(context);
+
+        var result = await repository.DeleteAsync(recruiter);
+
+        Assert.True(result);
+        Assert.Empty(context.Recruiters);
+    }
 }

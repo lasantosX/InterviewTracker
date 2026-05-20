@@ -62,4 +62,21 @@ public class CompanyService : ICompanyService
 
         return (true, null);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> DeleteCompanyAsync(int id)
+    {
+        var company = await _companyRepository.GetByIdAsync(id);
+
+        if (company is null)
+            return (false, "Company does not exist.");
+
+        var hasInterviews = await _companyRepository.HasInterviewsAsync(id);
+
+        if (hasInterviews)
+            return (false, "Company cannot be deleted because it has related interviews.");
+
+        await _companyRepository.DeleteAsync(company);
+
+        return (true, null);
+    }
 }

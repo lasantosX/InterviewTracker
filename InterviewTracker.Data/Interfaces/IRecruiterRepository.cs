@@ -11,4 +11,6 @@ public interface IRecruiterRepository
     Task<Recruiter> AddAsync(Recruiter recruiter);
 
     Task<bool> UpdateAsync(Recruiter recruiter);
+
+    Task<bool> DeleteAsync(Recruiter recruiter);
 }

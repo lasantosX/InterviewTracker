@@ -8,4 +8,6 @@ public interface ICompanyRepository
     Task<Company?> GetByIdAsync(int id);
     Task<Company> AddAsync(Company company);
     Task<bool> UpdateAsync(Company company);
+    Task<bool> DeleteAsync(Company company);
+    Task<bool> HasInterviewsAsync(int companyId);
 }

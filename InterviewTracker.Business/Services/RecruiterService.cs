@@ -62,4 +62,16 @@ public class RecruiterService : IRecruiterService
 
         return (true, null);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> DeleteRecruiterAsync(int id)
+    {
+        var recruiter = await _recruiterRepository.GetByIdAsync(id);
+
+        if (recruiter is null)
+            return (false, "Recruiter does not exist.");
+
+        await _recruiterRepository.DeleteAsync(recruiter);
+
+        return (true, null);
+    }
 }

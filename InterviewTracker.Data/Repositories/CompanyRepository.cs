@@ -46,4 +46,16 @@ public class CompanyRepository : ICompanyRepository
         _context.Companies.Update(company);
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> DeleteAsync(Company company)
+    {
+        _context.Companies.Remove(company);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> HasInterviewsAsync(int companyId)
+    {
+        return await _context.Interviews
+            .AnyAsync(x => x.CompanyId == companyId);
+    }
 }
