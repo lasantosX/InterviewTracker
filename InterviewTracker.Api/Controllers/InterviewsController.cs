@@ -17,9 +17,10 @@ public class InterviewsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Interview>>> GetInterviews()
+    public async Task<ActionResult<PagedResult<Interview>>> GetInterviews(
+    [FromQuery] PaginationRequest request)
     {
-        var interviews = await _interviewService.GetInterviewsAsync();
+        var interviews = await _interviewService.GetInterviewsAsync(request);
 
         return Ok(interviews);
     }

@@ -5,7 +5,7 @@ namespace InterviewTracker.Business.Interfaces;
 
 public interface IInterviewService
 {
-    Task<IEnumerable<Interview>> GetInterviewsAsync();
+    Task<PagedResult<Interview>> GetInterviewsAsync(PaginationRequest request);
 
     Task<Interview?> GetInterviewByIdAsync(int id);
 

@@ -100,4 +100,31 @@ public class InterviewServiceTests
         Assert.False(result.Success);
         Assert.Equal("Invalid interview status.", result.ErrorMessage);
     }
+
+    [Fact]
+    public async Task GetInterviewsAsync_ReturnsPagedInterviews()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        mockRepository
+            .Setup(x => x.GetPagedAsync(1, 10))
+            .ReturnsAsync((
+                new List<Interview>
+                {
+                new Interview { Id = 1, RoleTitle = "Senior .NET Developer" }
+                },
+                1
+            ));
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.GetInterviewsAsync(new PaginationRequest
+        {
+            PageNumber = 1,
+            PageSize = 10
+        });
+
+        Assert.Single(result.Items);
+        Assert.Equal(1, result.TotalCount);
+    }
 }

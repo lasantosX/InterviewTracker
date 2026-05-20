@@ -69,4 +69,38 @@ public class InterviewsControllerTests
 
         Assert.IsType<CreatedAtActionResult>(result.Result);
     }
+
+    [Fact]
+    public async Task GetInterviews_ReturnsOkWithPagedInterviews()
+    {
+        var mockService = new Mock<IInterviewService>();
+
+        mockService
+            .Setup(x => x.GetInterviewsAsync(It.IsAny<PaginationRequest>()))
+            .ReturnsAsync(new PagedResult<Interview>
+            {
+                Items = new List<Interview>
+                {
+                new Interview { Id = 1, RoleTitle = "Senior .NET Developer" },
+                new Interview { Id = 2, RoleTitle = "Backend Developer" }
+                },
+                PageNumber = 1,
+                PageSize = 10,
+                TotalCount = 2
+            });
+
+        var controller = new InterviewsController(mockService.Object);
+
+        var result = await controller.GetInterviews(new PaginationRequest
+        {
+            PageNumber = 1,
+            PageSize = 10
+        });
+
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var pagedResult = Assert.IsType<PagedResult<Interview>>(okResult.Value);
+
+        Assert.Equal(2, pagedResult.TotalCount);
+        Assert.Equal(2, pagedResult.Items.Count());
+    }
 }

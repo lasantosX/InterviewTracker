@@ -4,7 +4,7 @@ namespace InterviewTracker.Data.Interfaces;
 
 public interface IInterviewRepository
 {
-    Task<IEnumerable<Interview>> GetAllAsync();
+    Task<(IEnumerable<Interview> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize);
     Task<Interview?> GetByIdAsync(int id);
     Task<Interview> AddAsync(Interview interview);
     Task<bool> CompanyExistsAsync(int companyId);

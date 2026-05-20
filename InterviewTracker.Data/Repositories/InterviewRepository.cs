@@ -14,13 +14,21 @@ public class InterviewRepository : IInterviewRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Interview>> GetAllAsync()
+    public async Task<(IEnumerable<Interview> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
     {
-        return await _context.Interviews
+        var query = _context.Interviews
             .Include(x => x.Company)
             .Include(x => x.Recruiter)
-            .OrderByDescending(x => x.CreatedAt)
+            .OrderByDescending(x => x.CreatedAt);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Interview?> GetByIdAsync(int id)
