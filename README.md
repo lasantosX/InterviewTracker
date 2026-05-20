@@ -135,3 +135,21 @@ Add Swagger and dashboard screenshots here.
 Project Goal
 
 The purpose of this project is to demonstrate enterprise backend development practices using modern .NET technologies, layered architecture, repository patterns, testing strategies, SQL Server integrations, and real-world workflow modeling.
+
+## Authentication
+
+The API includes JWT authentication.
+
+Use the login endpoint to generate a token:
+
+| Method | Endpoint |
+|---|---|
+| POST | `/api/Auth/login` |
+
+Sample request:
+
+```json
+{
+  "username": "admin",
+  "password": "password"
+}
