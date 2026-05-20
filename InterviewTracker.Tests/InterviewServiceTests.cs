@@ -82,4 +82,22 @@ public class InterviewServiceTests
 
         mockRepository.Verify(x => x.AddAsync(It.IsAny<Interview>()), Times.Once);
     }
+
+    [Fact]
+    public async Task CreateInterviewAsync_WhenStatusIsInvalid_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.CreateInterviewAsync(new CreateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Random Status",
+            CompanyId = 1
+        });
+
+        Assert.False(result.Success);
+        Assert.Equal("Invalid interview status.", result.ErrorMessage);
+    }
 }

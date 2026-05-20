@@ -13,11 +13,19 @@ public class RecruiterRepository : IRecruiterRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Recruiter>> GetAllAsync()
+    public async Task<(IEnumerable<Recruiter> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
     {
-        return await _context.Recruiters
-            .OrderBy(x => x.FullName)
+        var query = _context.Recruiters
+            .OrderBy(x => x.FullName);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Recruiter?> GetByIdAsync(int id)

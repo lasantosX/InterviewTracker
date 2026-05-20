@@ -33,4 +33,33 @@ public class CompanyServiceTests
 
         mockRepository.Verify(x => x.AddAsync(It.IsAny<Company>()), Times.Once);
     }
+
+    [Fact]
+    public async Task GetCompaniesAsync_ReturnsPagedCompanies()
+    {
+        var mockRepository = new Mock<ICompanyRepository>();
+
+        mockRepository
+            .Setup(x => x.GetPagedAsync(1, 10))
+            .ReturnsAsync((
+                new List<Company>
+                {
+                new Company { Id = 1, Name = "A Company" }
+                },
+                1
+            ));
+
+        var service = new CompanyService(mockRepository.Object);
+
+        var result = await service.GetCompaniesAsync(new PaginationRequest
+        {
+            PageNumber = 1,
+            PageSize = 10
+        });
+
+        Assert.Single(result.Items);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Equal(1, result.PageNumber);
+        Assert.Equal(10, result.PageSize);
+    }
 }

@@ -5,7 +5,7 @@ namespace InterviewTracker.Business.Interfaces;
 
 public interface ICompanyService
 {
-    Task<IEnumerable<Company>> GetCompaniesAsync();
+    Task<PagedResult<Company>> GetCompaniesAsync(PaginationRequest request);
 
     Task<Company?> GetCompanyByIdAsync(int id);
 

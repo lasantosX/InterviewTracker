@@ -14,9 +14,19 @@ public class RecruiterService : IRecruiterService
         _recruiterRepository = recruiterRepository;
     }
 
-    public async Task<IEnumerable<Recruiter>> GetRecruitersAsync()
+    public async Task<PagedResult<Recruiter>> GetRecruitersAsync(PaginationRequest request)
     {
-        return await _recruiterRepository.GetAllAsync();
+        var (items, totalCount) = await _recruiterRepository.GetPagedAsync(
+            request.PageNumber,
+            request.PageSize);
+
+        return new PagedResult<Recruiter>
+        {
+            Items = items,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<Recruiter?> GetRecruiterByIdAsync(int id)
