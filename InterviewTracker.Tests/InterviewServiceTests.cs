@@ -127,4 +127,120 @@ public class InterviewServiceTests
         Assert.Single(result.Items);
         Assert.Equal(1, result.TotalCount);
     }
+
+    [Fact]
+    public async Task UpdateInterviewAsync_WhenStatusIsInvalid_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.UpdateInterviewAsync(1, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Invalid Status",
+            CompanyId = 1
+        });
+
+        Assert.False(result.Success);
+        Assert.Equal("Invalid interview status.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task UpdateInterviewAsync_WhenInterviewDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(999))
+            .ReturnsAsync((Interview?)null);
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.UpdateInterviewAsync(999, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Applied",
+            CompanyId = 1
+        });
+
+        Assert.False(result.Success);
+        Assert.Equal("Interview does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task UpdateInterviewAsync_WhenCompanyDoesNotExist_ReturnsFailure()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(new Interview
+            {
+                Id = 1,
+                RoleTitle = "Old Role",
+                CompanyId = 1
+            });
+
+        mockRepository
+            .Setup(x => x.CompanyExistsAsync(999))
+            .ReturnsAsync(false);
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.UpdateInterviewAsync(1, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Applied",
+            CompanyId = 999
+        });
+
+        Assert.False(result.Success);
+        Assert.Equal("Company does not exist.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task UpdateInterviewAsync_WhenValid_UpdatesInterview()
+    {
+        var mockRepository = new Mock<IInterviewRepository>();
+
+        var interview = new Interview
+        {
+            Id = 1,
+            RoleTitle = "Old Role",
+            Status = "Applied",
+            CompanyId = 1
+        };
+
+        mockRepository
+            .Setup(x => x.GetByIdAsync(1))
+            .ReturnsAsync(interview);
+
+        mockRepository
+            .Setup(x => x.CompanyExistsAsync(1))
+            .ReturnsAsync(true);
+
+        mockRepository
+            .Setup(x => x.UpdateAsync(It.IsAny<Interview>()))
+            .ReturnsAsync(true);
+
+        var service = new InterviewService(mockRepository.Object);
+
+        var result = await service.UpdateInterviewAsync(1, new UpdateInterviewRequest
+        {
+            RoleTitle = "Senior .NET Developer",
+            Status = "Technical Interview",
+            CompanyId = 1,
+            ExpectedSalary = 4500,
+            Notes = "Updated notes"
+        });
+
+        Assert.True(result.Success);
+        Assert.Equal("Senior .NET Developer", interview.RoleTitle);
+        Assert.Equal("Technical Interview", interview.Status);
+        Assert.Equal(4500, interview.ExpectedSalary);
+        Assert.Equal("Updated notes", interview.Notes);
+
+        mockRepository.Verify(x => x.UpdateAsync(interview), Times.Once);
+    }
 }

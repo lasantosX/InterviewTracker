@@ -40,4 +40,10 @@ public class RecruiterRepository : IRecruiterRepository
 
         return recruiter;
     }
+
+    public async Task<bool> UpdateAsync(Recruiter recruiter)
+    {
+        _context.Recruiters.Update(recruiter);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

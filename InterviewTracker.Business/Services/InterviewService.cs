@@ -69,4 +69,40 @@ public class InterviewService : IInterviewService
 
         return (true, null, createdInterview);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> UpdateInterviewAsync(int id, UpdateInterviewRequest request)
+    {
+        if (!InterviewStatuses.All.Contains(request.Status))
+            return (false, "Invalid interview status.");
+
+        var interview = await _interviewRepository.GetByIdAsync(id);
+
+        if (interview is null)
+            return (false, "Interview does not exist.");
+
+        var companyExists = await _interviewRepository.CompanyExistsAsync(request.CompanyId);
+
+        if (!companyExists)
+            return (false, "Company does not exist.");
+
+        if (request.RecruiterId.HasValue)
+        {
+            var recruiterExists = await _interviewRepository.RecruiterExistsAsync(request.RecruiterId.Value);
+
+            if (!recruiterExists)
+                return (false, "Recruiter does not exist.");
+        }
+
+        interview.RoleTitle = request.RoleTitle;
+        interview.Status = request.Status;
+        interview.InterviewDate = request.InterviewDate;
+        interview.Notes = request.Notes;
+        interview.ExpectedSalary = request.ExpectedSalary;
+        interview.CompanyId = request.CompanyId;
+        interview.RecruiterId = request.RecruiterId;
+
+        await _interviewRepository.UpdateAsync(interview);
+
+        return (true, null);
+    }
 }

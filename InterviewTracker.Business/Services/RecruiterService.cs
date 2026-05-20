@@ -46,4 +46,20 @@ public class RecruiterService : IRecruiterService
 
         return await _recruiterRepository.AddAsync(recruiter);
     }
+
+    public async Task<(bool Success, string? ErrorMessage)> UpdateRecruiterAsync(int id, UpdateRecruiterRequest request)
+    {
+        var recruiter = await _recruiterRepository.GetByIdAsync(id);
+
+        if (recruiter is null)
+            return (false, "Recruiter does not exist.");
+
+        recruiter.FullName = request.FullName;
+        recruiter.Email = request.Email;
+        recruiter.LinkedInUrl = request.LinkedInUrl;
+
+        await _recruiterRepository.UpdateAsync(recruiter);
+
+        return (true, null);
+    }
 }

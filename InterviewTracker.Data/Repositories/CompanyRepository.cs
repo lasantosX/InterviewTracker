@@ -40,4 +40,10 @@ public class CompanyRepository : ICompanyRepository
 
         return company;
     }
+
+    public async Task<bool> UpdateAsync(Company company)
+    {
+        _context.Companies.Update(company);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

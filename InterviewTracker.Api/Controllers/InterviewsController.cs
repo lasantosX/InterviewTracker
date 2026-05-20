@@ -2,9 +2,11 @@
 using InterviewTracker.Business.Interfaces;
 using InterviewTracker.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InterviewTracker.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class InterviewsController : ControllerBase
@@ -48,5 +50,16 @@ public class InterviewsController : ControllerBase
             nameof(GetInterviewById),
             new { id = result.Interview!.Id },
             result.Interview);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateInterview(int id, UpdateInterviewRequest request)
+    {
+        var result = await _interviewService.UpdateInterviewAsync(id, request);
+
+        if (!result.Success)
+            return BadRequest(result.ErrorMessage);
+
+        return NoContent();
     }
 }

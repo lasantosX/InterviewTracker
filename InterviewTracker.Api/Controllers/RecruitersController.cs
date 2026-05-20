@@ -2,9 +2,11 @@
 using InterviewTracker.Business.Interfaces;
 using InterviewTracker.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InterviewTracker.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RecruitersController : ControllerBase
@@ -42,5 +44,16 @@ public class RecruitersController : ControllerBase
         var recruiter = await _recruiterService.CreateRecruiterAsync(request);
 
         return CreatedAtAction(nameof(GetRecruiterById), new { id = recruiter.Id }, recruiter);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateRecruiter(int id, UpdateRecruiterRequest request)
+    {
+        var result = await _recruiterService.UpdateRecruiterAsync(id, request);
+
+        if (!result.Success)
+            return NotFound(result.ErrorMessage);
+
+        return NoContent();
     }
 }

@@ -10,4 +10,6 @@ public interface IRecruiterService
     Task<Recruiter?> GetRecruiterByIdAsync(int id);
 
     Task<Recruiter> CreateRecruiterAsync(CreateRecruiterRequest request);
+
+    Task<(bool Success, string? ErrorMessage)> UpdateRecruiterAsync(int id, UpdateRecruiterRequest request);
 }

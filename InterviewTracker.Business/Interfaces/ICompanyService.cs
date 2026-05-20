@@ -10,4 +10,6 @@ public interface ICompanyService
     Task<Company?> GetCompanyByIdAsync(int id);
 
     Task<Company> CreateCompanyAsync(CreateCompanyRequest request);
+
+    Task<(bool Success, string? ErrorMessage)> UpdateCompanyAsync(int id, UpdateCompanyRequest request);
 }

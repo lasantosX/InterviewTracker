@@ -56,4 +56,33 @@ public class RecruiterRepositoryTests
         Assert.Equal(2, result.Items.Count());
         Assert.Equal("A Recruiter", result.Items.First().FullName);
     }
+
+    [Fact]
+    public async Task UpdateAsync_UpdatesRecruiter()
+    {
+        using var context = CreateDbContext();
+
+        var recruiter = new Recruiter
+        {
+            FullName = "Old Recruiter",
+            Email = "old@example.com"
+        };
+
+        context.Recruiters.Add(recruiter);
+        await context.SaveChangesAsync();
+
+        var repository = new RecruiterRepository(context);
+
+        recruiter.FullName = "Updated Recruiter";
+        recruiter.Email = "updated@example.com";
+
+        var result = await repository.UpdateAsync(recruiter);
+
+        var updatedRecruiter = await context.Recruiters.FindAsync(recruiter.Id);
+
+        Assert.True(result);
+        Assert.NotNull(updatedRecruiter);
+        Assert.Equal("Updated Recruiter", updatedRecruiter!.FullName);
+        Assert.Equal("updated@example.com", updatedRecruiter.Email);
+    }
 }

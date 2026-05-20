@@ -10,4 +10,6 @@ public interface IInterviewService
     Task<Interview?> GetInterviewByIdAsync(int id);
 
     Task<(bool Success, string? ErrorMessage, Interview? Interview)> CreateInterviewAsync(CreateInterviewRequest request);
+
+    Task<(bool Success, string? ErrorMessage)> UpdateInterviewAsync(int id, UpdateInterviewRequest request);
 }

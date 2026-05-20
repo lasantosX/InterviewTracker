@@ -9,4 +9,6 @@ public interface IRecruiterRepository
     Task<Recruiter?> GetByIdAsync(int id);
 
     Task<Recruiter> AddAsync(Recruiter recruiter);
+
+    Task<bool> UpdateAsync(Recruiter recruiter);
 }
