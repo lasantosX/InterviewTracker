@@ -20,6 +20,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 builder.Services.AddScoped<IRecruiterRepository, RecruiterRepository>();
 builder.Services.AddScoped<IRecruiterService, RecruiterService>();
+builder.Services.AddScoped<IInterviewRepository, InterviewRepository>();
 
 var app = builder.Build();
 
