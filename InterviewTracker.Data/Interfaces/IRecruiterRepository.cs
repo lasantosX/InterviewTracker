@@ -4,7 +4,7 @@ namespace InterviewTracker.Data.Interfaces;
 
 public interface IRecruiterRepository
 {
-    Task<IEnumerable<Recruiter>> GetAllAsync();
+    Task<(IEnumerable<Recruiter> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize);
 
     Task<Recruiter?> GetByIdAsync(int id);
 

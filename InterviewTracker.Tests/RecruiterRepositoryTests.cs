@@ -34,4 +34,26 @@ public class RecruiterRepositoryTests
         Assert.True(result.Id > 0);
         Assert.Equal(1, context.Recruiters.Count());
     }
+
+    [Fact]
+    public async Task GetPagedAsync_ReturnsPagedRecruitersOrderedByName()
+    {
+        using var context = CreateDbContext();
+
+        context.Recruiters.AddRange(
+            new Recruiter { FullName = "Z Recruiter" },
+            new Recruiter { FullName = "A Recruiter" },
+            new Recruiter { FullName = "B Recruiter" }
+        );
+
+        await context.SaveChangesAsync();
+
+        var repository = new RecruiterRepository(context);
+
+        var result = await repository.GetPagedAsync(1, 2);
+
+        Assert.Equal(3, result.TotalCount);
+        Assert.Equal(2, result.Items.Count());
+        Assert.Equal("A Recruiter", result.Items.First().FullName);
+    }
 }

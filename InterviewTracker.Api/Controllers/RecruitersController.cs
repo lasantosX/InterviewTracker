@@ -17,9 +17,10 @@ public class RecruitersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Recruiter>>> GetRecruiters()
+    public async Task<ActionResult<PagedResult<Recruiter>>> GetRecruiters(
+        [FromQuery] PaginationRequest request)
     {
-        var recruiters = await _recruiterService.GetRecruitersAsync();
+        var recruiters = await _recruiterService.GetRecruitersAsync(request);
 
         return Ok(recruiters);
     }

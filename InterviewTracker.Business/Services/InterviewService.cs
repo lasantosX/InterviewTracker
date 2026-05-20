@@ -2,6 +2,7 @@
 using InterviewTracker.Business.Interfaces;
 using InterviewTracker.Data.Interfaces;
 using InterviewTracker.Domain.Models;
+using InterviewTracker.Domain.Constants;
 
 namespace InterviewTracker.Business.Services;
 
@@ -27,6 +28,9 @@ public class InterviewService : IInterviewService
     public async Task<(bool Success, string? ErrorMessage, Interview? Interview)> CreateInterviewAsync(CreateInterviewRequest request)
     {
         var companyExists = await _interviewRepository.CompanyExistsAsync(request.CompanyId);
+
+        if (!InterviewStatuses.All.Contains(request.Status))
+            return (false, "Invalid interview status.", null);
 
         if (!companyExists)
             return (false, "Company does not exist.", null);

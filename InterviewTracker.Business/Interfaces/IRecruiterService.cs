@@ -5,7 +5,7 @@ namespace InterviewTracker.Business.Interfaces;
 
 public interface IRecruiterService
 {
-    Task<IEnumerable<Recruiter>> GetRecruitersAsync();
+    Task<PagedResult<Recruiter>> GetRecruitersAsync(PaginationRequest request);
 
     Task<Recruiter?> GetRecruiterByIdAsync(int id);
 

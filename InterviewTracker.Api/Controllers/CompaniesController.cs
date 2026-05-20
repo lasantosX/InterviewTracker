@@ -17,9 +17,10 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+    public async Task<ActionResult<PagedResult<Company>>> GetCompanies(
+    [FromQuery] PaginationRequest request)
     {
-        var companies = await _companyService.GetCompaniesAsync();
+        var companies = await _companyService.GetCompaniesAsync(request);
 
         return Ok(companies);
     }

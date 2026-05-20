@@ -14,9 +14,19 @@ public class CompanyService : ICompanyService
         _companyRepository = companyRepository;
     }
 
-    public async Task<IEnumerable<Company>> GetCompaniesAsync()
+    public async Task<PagedResult<Company>> GetCompaniesAsync(PaginationRequest request)
     {
-        return await _companyRepository.GetAllAsync();
+        var (items, totalCount) = await _companyRepository.GetPagedAsync(
+            request.PageNumber,
+            request.PageSize);
+
+        return new PagedResult<Company>
+        {
+            Items = items,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<Company?> GetCompanyByIdAsync(int id)

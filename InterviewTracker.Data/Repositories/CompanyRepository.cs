@@ -13,11 +13,19 @@ public class CompanyRepository : ICompanyRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Company>> GetAllAsync()
+    public async Task<(IEnumerable<Company> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
     {
-        return await _context.Companies
-            .OrderBy(x => x.Name)
+        var query = _context.Companies
+            .OrderBy(x => x.Name);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Company?> GetByIdAsync(int id)
