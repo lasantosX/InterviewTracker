@@ -14,7 +14,7 @@ public class InterviewRepository : IInterviewRepository
         _context = context;
     }
 
-    public async Task<(IEnumerable<Interview> Items, int TotalCount)> GetPagedAsync(int pageNumber, int pageSize)
+    public async Task<(IEnumerable<Interview> Items, int TotalCount)> GetFilteredAsync(InterviewFilter filter)
     {
         var query = _context.Interviews
             .Include(x => x.Company)
@@ -24,8 +24,8 @@ public class InterviewRepository : IInterviewRepository
         var totalCount = await query.CountAsync();
 
         var items = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)
             .ToListAsync();
 
         return (items, totalCount);

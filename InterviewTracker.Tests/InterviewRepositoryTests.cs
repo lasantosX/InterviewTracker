@@ -102,7 +102,13 @@ public class InterviewRepositoryTests
 
         var repository = new InterviewRepository(context);
 
-        var result = await repository.GetPagedAsync(1, 2);
+        var filter = new InterviewFilter
+        {
+            PageNumber = 1,
+            PageSize = 2
+        };
+
+        var result = await repository.GetFilteredAsync(filter);
 
         Assert.Equal(3, result.TotalCount);
         Assert.Equal(2, result.Items.Count());

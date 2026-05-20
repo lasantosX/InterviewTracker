@@ -107,7 +107,7 @@ public class InterviewServiceTests
         var mockRepository = new Mock<IInterviewRepository>();
 
         mockRepository
-            .Setup(x => x.GetPagedAsync(1, 10))
+            .Setup(x => x.GetFilteredAsync(It.IsAny<InterviewFilter>()))
             .ReturnsAsync((
                 new List<Interview>
                 {
@@ -118,7 +118,7 @@ public class InterviewServiceTests
 
         var service = new InterviewService(mockRepository.Object);
 
-        var result = await service.GetInterviewsAsync(new PaginationRequest
+        var result = await service.GetInterviewsAsync(new InterviewFilterRequest
         {
             PageNumber = 1,
             PageSize = 10
