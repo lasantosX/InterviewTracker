@@ -22,6 +22,8 @@ builder.Services.AddScoped<IRecruiterRepository, RecruiterRepository>();
 builder.Services.AddScoped<IRecruiterService, RecruiterService>();
 builder.Services.AddScoped<IInterviewRepository, InterviewRepository>();
 
+builder.Services.AddScoped<IInterviewService, InterviewService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
