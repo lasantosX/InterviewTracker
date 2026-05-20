@@ -1,4 +1,4 @@
-﻿namespace InterviewTracker.Api.Dtos;
+﻿namespace InterviewTracker.Business.Dtos;
 
 public class CreateCompanyRequest
 {

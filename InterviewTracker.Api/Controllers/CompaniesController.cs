@@ -1,8 +1,7 @@
-﻿using InterviewTracker.Api.Dtos;
-using InterviewTracker.Data;
+﻿using InterviewTracker.Business.Dtos;
+using InterviewTracker.Business.Interfaces;
 using InterviewTracker.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace InterviewTracker.Api.Controllers;
 
@@ -10,19 +9,17 @@ namespace InterviewTracker.Api.Controllers;
 [Route("api/[controller]")]
 public class CompaniesController : ControllerBase
 {
-    private readonly InterviewTrackerDbContext _context;
+    private readonly ICompanyService _companyService;
 
-    public CompaniesController(InterviewTrackerDbContext context)
+    public CompaniesController(ICompanyService companyService)
     {
-        _context = context;
+        _companyService = companyService;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
     {
-        var companies = await _context.Companies
-            .OrderBy(x => x.Name)
-            .ToListAsync();
+        var companies = await _companyService.GetCompaniesAsync();
 
         return Ok(companies);
     }
@@ -30,7 +27,7 @@ public class CompaniesController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Company>> GetCompanyById(int id)
     {
-        var company = await _context.Companies.FindAsync(id);
+        var company = await _companyService.GetCompanyByIdAsync(id);
 
         if (company is null)
             return NotFound();
@@ -41,16 +38,7 @@ public class CompaniesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Company>> CreateCompany(CreateCompanyRequest request)
     {
-        var company = new Company
-        {
-            Name = request.Name,
-            Website = request.Website,
-            Location = request.Location,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        _context.Companies.Add(company);
-        await _context.SaveChangesAsync();
+        var company = await _companyService.CreateCompanyAsync(request);
 
         return CreatedAtAction(nameof(GetCompanyById), new { id = company.Id }, company);
     }

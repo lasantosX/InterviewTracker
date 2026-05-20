@@ -1,4 +1,8 @@
+using InterviewTracker.Business.Interfaces;
+using InterviewTracker.Business.Services;
 using InterviewTracker.Data;
+using InterviewTracker.Data.Interfaces;
+using InterviewTracker.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,9 @@ builder.Services.AddDbContext<InterviewTrackerDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,39 @@
+﻿using InterviewTracker.Business.Dtos;
+using InterviewTracker.Business.Interfaces;
+using InterviewTracker.Data.Interfaces;
+using InterviewTracker.Domain.Models;
+
+namespace InterviewTracker.Business.Services;
+
+public class CompanyService : ICompanyService
+{
+    private readonly ICompanyRepository _companyRepository;
+
+    public CompanyService(ICompanyRepository companyRepository)
+    {
+        _companyRepository = companyRepository;
+    }
+
+    public async Task<IEnumerable<Company>> GetCompaniesAsync()
+    {
+        return await _companyRepository.GetAllAsync();
+    }
+
+    public async Task<Company?> GetCompanyByIdAsync(int id)
+    {
+        return await _companyRepository.GetByIdAsync(id);
+    }
+
+    public async Task<Company> CreateCompanyAsync(CreateCompanyRequest request)
+    {
+        var company = new Company
+        {
+            Name = request.Name,
+            Website = request.Website,
+            Location = request.Location,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        return await _companyRepository.AddAsync(company);
+    }
+}
