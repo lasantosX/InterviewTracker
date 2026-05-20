@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="InterviewTracker.Api/InterviewTracker.Api.csproj" />
   <Project Path="InterviewTracker.Business/InterviewTracker.Business.csproj" />
   <Project Path="InterviewTracker.Data/InterviewTracker.Data.csproj" />
