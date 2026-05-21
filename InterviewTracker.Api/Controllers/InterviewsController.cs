@@ -19,8 +19,8 @@ public class InterviewsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedResult<Interview>>> GetInterviews(
-    [FromQuery] InterviewFilterRequest request)
+    public async Task<ActionResult<PagedResult<InterviewListItemResponse>>> GetInterviews(
+        [FromQuery] InterviewFilterRequest request)
     {
         var interviews = await _interviewService.GetInterviewsAsync(request);
 

@@ -19,11 +19,21 @@ public class InterviewRepository : IInterviewRepository
         var query = _context.Interviews
             .Include(x => x.Company)
             .Include(x => x.Recruiter)
-            .OrderByDescending(x => x.CreatedAt);
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Status))
+            query = query.Where(x => x.Status == filter.Status);
+
+        if (filter.CompanyId.HasValue)
+            query = query.Where(x => x.CompanyId == filter.CompanyId.Value);
+
+        if (filter.RecruiterId.HasValue)
+            query = query.Where(x => x.RecruiterId == filter.RecruiterId.Value);
 
         var totalCount = await query.CountAsync();
 
         var items = await query
+            .OrderByDescending(x => x.CreatedAt)
             .Skip((filter.PageNumber - 1) * filter.PageSize)
             .Take(filter.PageSize)
             .ToListAsync();

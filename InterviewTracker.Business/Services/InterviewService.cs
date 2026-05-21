@@ -15,7 +15,7 @@ public class InterviewService : IInterviewService
         _interviewRepository = interviewRepository;
     }
 
-    public async Task<PagedResult<Interview>> GetInterviewsAsync(InterviewFilterRequest request)
+    public async Task<PagedResult<InterviewListItemResponse>> GetInterviewsAsync(InterviewFilterRequest request)
     {
         var filter = new InterviewFilter
         {
@@ -28,9 +28,24 @@ public class InterviewService : IInterviewService
 
         var (items, totalCount) = await _interviewRepository.GetFilteredAsync(filter);
 
-        return new PagedResult<Interview>
+        var responseItems = items.Select(x => new InterviewListItemResponse
         {
-            Items = items,
+            Id = x.Id,
+            RoleTitle = x.RoleTitle,
+            Status = x.Status,
+            InterviewDate = x.InterviewDate,
+            Notes = x.Notes,
+            ExpectedSalary = x.ExpectedSalary,
+            CompanyId = x.CompanyId,
+            CompanyName = x.Company?.Name,
+            RecruiterId = x.RecruiterId,
+            RecruiterName = x.Recruiter?.FullName,
+            CreatedAt = x.CreatedAt
+        });
+
+        return new PagedResult<InterviewListItemResponse>
+        {
+            Items = responseItems,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize,
             TotalCount = totalCount

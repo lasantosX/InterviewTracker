@@ -1,1 +1,76 @@
-<p>interviews works!</p>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>Interviews</h1>
+      <p>Track applications, interviews, offers, and rejections</p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <label for="status-filter">Status</label>
+
+    <select id="status-filter" [(ngModel)]="status" (change)="applyFilter()" title="Filter interviews by status">
+      @for (item of statuses; track item) {
+        <option [value]="item">
+          {{ item || 'All Statuses' }}
+        </option>
+      }
+    </select>
+  </div>
+
+  @if (isLoading) {
+    <div class="message">Loading interviews...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Company</th>
+          <th>Recruiter</th>
+          <th>Status</th>
+          <th>Expected Salary</th>
+          <th>Interview Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (interview of interviews; track interview.id) {
+          <tr>
+            <td>{{ interview.roleTitle }}</td>
+            <td>{{ interview.companyName || '-' }}</td>
+            <td>{{ interview.recruiterName || '-' }}</td>
+            <td>
+              <span class="badge">{{ interview.status }}</span>
+            </td>
+            <td>${{ interview.expectedSalary || 0 }}</td>
+            <td>
+              {{
+                interview.interviewDate
+                  ? (interview.interviewDate | date: 'MMM d, y - h:mm a')
+                  : '-'
+              }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (!isLoading && interviews.length === 0) {
+      <div class="empty">No interviews found.</div>
+    }
+  </div>
+
+  <div class="pagination">
+    <button type="button" (click)="previousPage()" [disabled]="pageNumber === 1">Previous</button>
+
+    <span>Page {{ pageNumber }} of {{ totalPages || 1 }}</span>
+
+    <button type="button" (click)="nextPage()" [disabled]="pageNumber >= totalPages">Next</button>
+  </div>
+</div>

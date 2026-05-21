@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth';
   selector: 'app-login',
   imports: [FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
 })
 export class LoginComponent {
   username = 'admin';
@@ -16,18 +16,20 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   login(): void {
     this.errorMessage = '';
 
-    this.authService.login({
-      username: this.username,
-      password: this.password
-    }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: () => this.errorMessage = 'Invalid username or password.'
-    });
+    this.authService
+      .login({
+        username: this.username,
+        password: this.password,
+      })
+      .subscribe({
+        next: () => this.router.navigate(['/dashboard']),
+        error: () => (this.errorMessage = 'Invalid username or password.'),
+      });
   }
 }
