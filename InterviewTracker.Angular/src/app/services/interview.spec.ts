@@ -10,11 +10,7 @@ describe('InterviewService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        InterviewService,
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
+      providers: [InterviewService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(InterviewService);
@@ -26,13 +22,13 @@ describe('InterviewService', () => {
   });
 
   it('should get interviews with pagination and status', () => {
-    service.getInterviews(1, 10, 'Applied').subscribe(result => {
+    service.getInterviews(1, 10, 'Applied').subscribe((result) => {
       expect(result.totalCount).toBe(1);
       expect(result.items.length).toBe(1);
     });
 
     const req = httpMock.expectOne(
-      'https://localhost:7185/api/Interviews?pageNumber=1&pageSize=10&status=Applied'
+      'https://localhost:7185/api/Interviews?pageNumber=1&pageSize=10&status=Applied',
     );
 
     expect(req.request.method).toBe('GET');
@@ -45,13 +41,13 @@ describe('InterviewService', () => {
           status: 'Applied',
           companyId: 1,
           companyName: 'TechNova',
-          createdAt: '2026-05-20T15:00:00'
-        }
+          createdAt: '2026-05-20T15:00:00',
+        },
       ],
       pageNumber: 1,
       pageSize: 10,
       totalCount: 1,
-      totalPages: 1
+      totalPages: 1,
     });
   });
 
@@ -59,10 +55,10 @@ describe('InterviewService', () => {
     const request = {
       roleTitle: 'Senior .NET Developer',
       status: 'Applied',
-      companyId: 1
+      companyId: 1,
     };
 
-    service.createInterview(request).subscribe(result => {
+    service.createInterview(request).subscribe((result) => {
       expect(result.roleTitle).toBe('Senior .NET Developer');
     });
 
@@ -75,12 +71,12 @@ describe('InterviewService', () => {
       roleTitle: 'Senior .NET Developer',
       status: 'Applied',
       companyId: 1,
-      createdAt: '2026-05-20T15:00:00'
+      createdAt: '2026-05-20T15:00:00',
     });
   });
 
   it('should delete interview', () => {
-    service.deleteInterview(1).subscribe(result => {
+    service.deleteInterview(1).subscribe((result) => {
       expect(result).toBeNull();
     });
 

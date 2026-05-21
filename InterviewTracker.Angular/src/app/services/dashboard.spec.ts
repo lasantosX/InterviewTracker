@@ -10,11 +10,7 @@ describe('DashboardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DashboardService,
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
+      providers: [DashboardService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(DashboardService);
@@ -26,7 +22,7 @@ describe('DashboardService', () => {
   });
 
   it('should get dashboard summary', () => {
-    service.getSummary().subscribe(result => {
+    service.getSummary().subscribe((result) => {
       expect(result.totalCompanies).toBe(2);
       expect(result.totalInterviews).toBe(5);
     });
@@ -43,7 +39,7 @@ describe('DashboardService', () => {
       technicalInterviewCount: 1,
       offerCount: 1,
       rejectedCount: 1,
-      averageExpectedSalary: 4500
+      averageExpectedSalary: 4500,
     });
   });
 });
