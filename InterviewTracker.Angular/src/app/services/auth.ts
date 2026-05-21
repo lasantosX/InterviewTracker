@@ -12,7 +12,7 @@ interface LoginResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly apiUrl = 'https://localhost:7185/api/Auth';
@@ -20,12 +20,11 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request)
-      .pipe(
-        tap(response => {
-          localStorage.setItem('accessToken', response.accessToken);
-        })
-      );
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
+      tap((response) => {
+        localStorage.setItem('accessToken', response.accessToken);
+      }),
+    );
   }
 
   logout(): void {

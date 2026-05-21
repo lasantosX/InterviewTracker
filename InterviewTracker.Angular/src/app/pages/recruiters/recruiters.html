@@ -1,1 +1,58 @@
-<p>recruiters works!</p>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>Recruiters</h1>
+      <p>Manage recruiter contacts connected to your interviews</p>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="message">Loading recruiters...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>LinkedIn</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (recruiter of recruiters; track recruiter.id) {
+          <tr>
+            <td>{{ recruiter.fullName }}</td>
+            <td>{{ recruiter.email || '-' }}</td>
+            <td>
+              @if (recruiter.linkedInUrl) {
+                <a [href]="recruiter.linkedInUrl" target="_blank">Profile</a>
+              } @else {
+                -
+              }
+            </td>
+            <td>{{ recruiter.createdAt | date: 'MMM d, y' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (!isLoading && recruiters.length === 0) {
+      <div class="empty">No recruiters found.</div>
+    }
+  </div>
+
+  <div class="pagination">
+    <button type="button" (click)="previousPage()" [disabled]="pageNumber === 1">Previous</button>
+
+    <span>Page {{ pageNumber }} of {{ totalPages || 1 }}</span>
+
+    <button type="button" (click)="nextPage()" [disabled]="pageNumber >= totalPages">Next</button>
+  </div>
+</div>

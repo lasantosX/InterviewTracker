@@ -1,1 +1,56 @@
-<p>dashboard works!</p>
+<div class="page">
+  <h1>Dashboard</h1>
+  <p>Interview pipeline overview</p>
+
+  @if (isLoading) {
+    <div>Loading...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error">{{ errorMessage }}</div>
+  }
+
+  @if (summary) {
+    <div class="grid">
+      <div class="card">
+        <span>Total Companies</span>
+        <strong>{{ summary.totalCompanies }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Total Recruiters</span>
+        <strong>{{ summary.totalRecruiters }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Total Interviews</span>
+        <strong>{{ summary.totalInterviews }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Applied</span>
+        <strong>{{ summary.appliedCount }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Technical Interviews</span>
+        <strong>{{ summary.technicalInterviewCount }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Offers</span>
+        <strong>{{ summary.offerCount }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Rejected</span>
+        <strong>{{ summary.rejectedCount }}</strong>
+      </div>
+
+      <div class="card">
+        <span>Average Expected Salary</span>
+        <strong>${{ summary.averageExpectedSalary }}</strong>
+      </div>
+    </div>
+  }
+</div>
