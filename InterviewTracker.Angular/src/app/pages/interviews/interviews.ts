@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Interview, InterviewService } from '../../services/interview';
 import { DatePipe } from '@angular/common';
+import { Company, CompanyService } from '../../services/company';
 
 @Component({
   selector: 'app-interviews',
@@ -17,13 +18,42 @@ export class Interviews implements OnInit {
   totalPages = 0;
   isLoading = false;
   errorMessage = '';
+  companies: Company[] = [];
+
+  showCreateForm = false;
+
+  newInterview = {
+    roleTitle: '',
+    status: 'Applied',
+    interviewDate: '',
+    notes: '',
+    expectedSalary: 0,
+    companyId: 1,
+    recruiterId: undefined as number | undefined,
+  };
 
   statuses = ['', 'Applied', 'Recruiter Screen', 'Technical Interview', 'Offer', 'Rejected'];
 
-  constructor(private interviewService: InterviewService) {}
+  constructor(
+    private interviewService: InterviewService,
+    private companyService: CompanyService,
+  ) {}
 
   ngOnInit(): void {
+    this.loadCompanies();
     this.loadInterviews();
+  }
+
+  loadCompanies(): void {
+    this.companyService.getCompanies(1, 100).subscribe({
+      next: (result) => {
+        this.companies = result.items;
+
+        if (this.companies.length > 0) {
+          this.newInterview.companyId = this.companies[0].id;
+        }
+      },
+    });
   }
 
   loadInterviews(): void {
@@ -62,5 +92,31 @@ export class Interviews implements OnInit {
       this.pageNumber--;
       this.loadInterviews();
     }
+  }
+
+  toggleCreateForm(): void {
+    this.showCreateForm = !this.showCreateForm;
+  }
+
+  createInterview(): void {
+    this.interviewService
+      .createInterview({
+        roleTitle: this.newInterview.roleTitle,
+        status: this.newInterview.status,
+        interviewDate: this.newInterview.interviewDate || undefined,
+        notes: this.newInterview.notes || undefined,
+        expectedSalary: this.newInterview.expectedSalary || undefined,
+        companyId: this.newInterview.companyId,
+        recruiterId: this.newInterview.recruiterId,
+      })
+      .subscribe({
+        next: () => {
+          this.showCreateForm = false;
+          this.loadInterviews();
+        },
+        error: () => {
+          this.errorMessage = 'Unable to create interview.';
+        },
+      });
   }
 }

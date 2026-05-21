@@ -4,12 +4,72 @@
       <h1>Interviews</h1>
       <p>Track applications, interviews, offers, and rejections</p>
     </div>
+
+    <button type="button" class="primary-button" (click)="toggleCreateForm()">Add Interview</button>
   </div>
 
-  <div class="toolbar">
-    <label for="status-filter">Status</label>
+  @if (showCreateForm) {
+    <div class="form-card">
+      <h2>Add Interview</h2>
 
-    <select id="status-filter" [(ngModel)]="status" (change)="applyFilter()" title="Filter interviews by status">
+      <div class="form-grid">
+        <div>
+          <label>Role Title</label>
+          <input type="text" [(ngModel)]="newInterview.roleTitle" />
+        </div>
+
+        <div>
+          <label>Status</label>
+          <select [(ngModel)]="newInterview.status">
+            @for (item of statuses; track item) {
+              @if (item) {
+                <option [value]="item">{{ item }}</option>
+              }
+            }
+          </select>
+        </div>
+
+        <div>
+          <label>Interview Date</label>
+          <input type="datetime-local" [(ngModel)]="newInterview.interviewDate" />
+        </div>
+
+        <div>
+          <label>Expected Salary</label>
+          <input type="number" [(ngModel)]="newInterview.expectedSalary" />
+        </div>
+
+        <div>
+          <label>Company Id</label>
+          <select [(ngModel)]="newInterview.companyId">
+            @for (company of companies; track company.id) {
+              <option [value]="company.id">{{ company.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label>Recruiter Id</label>
+          <input type="number" [(ngModel)]="newInterview.recruiterId" />
+        </div>
+      </div>
+
+      <label>Notes</label>
+      <textarea rows="4" [(ngModel)]="newInterview.notes"></textarea>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="toggleCreateForm()">Cancel</button>
+        <button type="button" class="primary-button" (click)="createInterview()">
+          Save Interview
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="toolbar">
+    <label>Status</label>
+
+    <select [(ngModel)]="status" (change)="applyFilter()">
       @for (item of statuses; track item) {
         <option [value]="item">
           {{ item || 'All Statuses' }}

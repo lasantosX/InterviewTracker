@@ -16,6 +16,16 @@ export interface Interview {
   recruiterName?: string;
 }
 
+export interface CreateInterviewRequest {
+  roleTitle: string;
+  status: string;
+  interviewDate?: string;
+  notes?: string;
+  expectedSalary?: number;
+  companyId: number;
+  recruiterId?: number;
+}
+
 export interface PagedResult<T> {
   items: T[];
   pageNumber: number;
@@ -31,6 +41,10 @@ export class InterviewService {
   private readonly apiUrl = 'https://localhost:7185/api/Interviews';
 
   constructor(private http: HttpClient) {}
+
+  createInterview(request: CreateInterviewRequest): Observable<Interview> {
+    return this.http.post<Interview>(this.apiUrl, request);
+  }
 
   getInterviews(
     pageNumber = 1,
