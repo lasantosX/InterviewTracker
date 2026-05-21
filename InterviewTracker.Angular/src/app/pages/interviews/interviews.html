@@ -50,7 +50,13 @@
 
         <div>
           <label>Recruiter Id</label>
-          <input type="number" [(ngModel)]="newInterview.recruiterId" />
+          <select [(ngModel)]="newInterview.recruiterId">
+            <option [ngValue]="undefined">No Recruiter</option>
+
+            @for (recruiter of recruiters; track recruiter.id) {
+              <option [ngValue]="recruiter.id">{{ recruiter.fullName }}</option>
+            }
+          </select>
         </div>
       </div>
 
@@ -96,6 +102,7 @@
           <th>Status</th>
           <th>Expected Salary</th>
           <th>Interview Date</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -115,6 +122,15 @@
                   ? (interview.interviewDate | date: 'MMM d, y - h:mm a')
                   : '-'
               }}
+            </td>
+            <td>
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="deleteInterview(interview.id)"
+              >
+                Delete
+              </button>
             </td>
           </tr>
         }

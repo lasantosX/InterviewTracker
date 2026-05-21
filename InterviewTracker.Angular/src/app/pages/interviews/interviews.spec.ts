@@ -10,24 +10,28 @@ describe('Interviews', () => {
   let fixture: ComponentFixture<Interviews>;
 
   const interviewServiceMock = {
-    getInterviews: vi.fn().mockReturnValue(of({
-      items: [],
-      pageNumber: 1,
-      pageSize: 10,
-      totalCount: 0,
-      totalPages: 0
-    })),
-    createInterview: vi.fn()
+    getInterviews: vi.fn().mockReturnValue(
+      of({
+        items: [],
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: 0,
+        totalPages: 0,
+      }),
+    ),
+    createInterview: vi.fn(),
   };
 
   const companyServiceMock = {
-    getCompanies: vi.fn().mockReturnValue(of({
-      items: [],
-      pageNumber: 1,
-      pageSize: 10,
-      totalCount: 0,
-      totalPages: 0
-    }))
+    getCompanies: vi.fn().mockReturnValue(
+      of({
+        items: [],
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: 0,
+        totalPages: 0,
+      }),
+    ),
   };
 
   beforeEach(async () => {
@@ -35,8 +39,8 @@ describe('Interviews', () => {
       imports: [Interviews],
       providers: [
         { provide: InterviewService, useValue: interviewServiceMock },
-        { provide: CompanyService, useValue: companyServiceMock }
-      ]
+        { provide: CompanyService, useValue: companyServiceMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Interviews);

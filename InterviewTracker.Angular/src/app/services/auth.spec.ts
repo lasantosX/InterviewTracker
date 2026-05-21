@@ -12,11 +12,7 @@ describe('AuthService', () => {
     localStorage.clear();
 
     TestBed.configureTestingModule({
-      providers: [
-        AuthService,
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
+      providers: [AuthService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(AuthService);
@@ -29,7 +25,7 @@ describe('AuthService', () => {
   });
 
   it('should login and store access token', () => {
-    service.login({ username: 'admin', password: 'password' }).subscribe(response => {
+    service.login({ username: 'admin', password: 'password' }).subscribe((response) => {
       expect(response.accessToken).toBe('fake-token');
     });
 
@@ -38,7 +34,7 @@ describe('AuthService', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush({
-      accessToken: 'fake-token'
+      accessToken: 'fake-token',
     });
 
     expect(localStorage.getItem('accessToken')).toBe('fake-token');

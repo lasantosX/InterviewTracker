@@ -59,4 +59,8 @@ export class InterviewService {
 
     return this.http.get<PagedResult<Interview>>(this.apiUrl, { params });
   }
+
+  deleteInterview(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
