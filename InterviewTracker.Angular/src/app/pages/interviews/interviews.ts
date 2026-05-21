@@ -34,6 +34,18 @@ export class Interviews implements OnInit {
     recruiterId: undefined as number | undefined,
   };
 
+  editingInterviewId?: number;
+
+  editInterview = {
+    roleTitle: '',
+    status: 'Applied',
+    interviewDate: '',
+    notes: '',
+    expectedSalary: 0,
+    companyId: 1,
+    recruiterId: undefined as number | undefined,
+  };
+
   statuses = ['', 'Applied', 'Recruiter Screen', 'Technical Interview', 'Offer', 'Rejected'];
 
   constructor(
@@ -145,5 +157,49 @@ export class Interviews implements OnInit {
         this.errorMessage = 'Unable to delete interview.';
       },
     });
+  }
+
+  startEdit(interview: Interview): void {
+    this.editingInterviewId = interview.id;
+
+    this.editInterview = {
+      roleTitle: interview.roleTitle,
+      status: interview.status,
+      interviewDate: interview.interviewDate ? interview.interviewDate.substring(0, 16) : '',
+      notes: interview.notes || '',
+      expectedSalary: interview.expectedSalary || 0,
+      companyId: interview.companyId,
+      recruiterId: interview.recruiterId,
+    };
+  }
+
+  cancelEdit(): void {
+    this.editingInterviewId = undefined;
+  }
+
+  updateInterview(): void {
+    if (!this.editingInterviewId) {
+      return;
+    }
+
+    this.interviewService
+      .updateInterview(this.editingInterviewId, {
+        roleTitle: this.editInterview.roleTitle,
+        status: this.editInterview.status,
+        interviewDate: this.editInterview.interviewDate || undefined,
+        notes: this.editInterview.notes || undefined,
+        expectedSalary: this.editInterview.expectedSalary || undefined,
+        companyId: this.editInterview.companyId,
+        recruiterId: this.editInterview.recruiterId,
+      })
+      .subscribe({
+        next: () => {
+          this.editingInterviewId = undefined;
+          this.loadInterviews();
+        },
+        error: () => {
+          this.errorMessage = 'Unable to update interview.';
+        },
+      });
   }
 }

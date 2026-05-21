@@ -84,6 +84,70 @@
     </select>
   </div>
 
+  @if (editingInterviewId) {
+    <div class="form-card">
+      <h2>Edit Interview</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Role Title</label>
+          <input type="text" [(ngModel)]="editInterview.roleTitle" />
+        </div>
+
+        <div>
+          <label>Status</label>
+          <select [(ngModel)]="editInterview.status">
+            @for (item of statuses; track item) {
+              @if (item) {
+                <option [value]="item">{{ item }}</option>
+              }
+            }
+          </select>
+        </div>
+
+        <div>
+          <label>Interview Date</label>
+          <input type="datetime-local" [(ngModel)]="editInterview.interviewDate" />
+        </div>
+
+        <div>
+          <label>Expected Salary</label>
+          <input type="number" [(ngModel)]="editInterview.expectedSalary" />
+        </div>
+
+        <div>
+          <label>Company</label>
+          <select [(ngModel)]="editInterview.companyId">
+            @for (company of companies; track company.id) {
+              <option [ngValue]="company.id">{{ company.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label>Recruiter</label>
+          <select [(ngModel)]="editInterview.recruiterId">
+            <option [ngValue]="undefined">No Recruiter</option>
+
+            @for (recruiter of recruiters; track recruiter.id) {
+              <option [ngValue]="recruiter.id">{{ recruiter.fullName }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <label>Notes</label>
+      <textarea rows="4" [(ngModel)]="editInterview.notes"></textarea>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+        <button type="button" class="primary-button" (click)="updateInterview()">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  }
+
   @if (isLoading) {
     <div class="message">Loading interviews...</div>
   }
@@ -126,7 +190,15 @@
             <td>
               <button
                 type="button"
-                class="secondary-button"
+                class="action-button edit-button"
+                (click)="startEdit(interview)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="action-button delete-button"
                 (click)="deleteInterview(interview.id)"
               >
                 Delete

@@ -34,6 +34,16 @@ export interface PagedResult<T> {
   totalPages: number;
 }
 
+export interface UpdateInterviewRequest {
+  roleTitle: string;
+  status: string;
+  interviewDate?: string;
+  notes?: string;
+  expectedSalary?: number;
+  companyId: number;
+  recruiterId?: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -62,5 +72,9 @@ export class InterviewService {
 
   deleteInterview(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateInterview(id: number, request: UpdateInterviewRequest): Observable<Interview> {
+    return this.http.put<Interview>(`${this.apiUrl}/${id}`, request);
   }
 }
