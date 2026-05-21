@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Interview, InterviewService } from '../../services/interview';
 import { DatePipe } from '@angular/common';
 import { Company, CompanyService } from '../../services/company';
+import { Recruiter, RecruiterService } from '../../services/recruiter';
 
 @Component({
   selector: 'app-interviews',
@@ -19,6 +20,7 @@ export class Interviews implements OnInit {
   isLoading = false;
   errorMessage = '';
   companies: Company[] = [];
+  recruiters: Recruiter[] = [];
 
   showCreateForm = false;
 
@@ -37,11 +39,21 @@ export class Interviews implements OnInit {
   constructor(
     private interviewService: InterviewService,
     private companyService: CompanyService,
+    private recruiterService: RecruiterService,
   ) {}
 
   ngOnInit(): void {
     this.loadCompanies();
+    this.loadRecruiters();
     this.loadInterviews();
+  }
+
+  loadRecruiters(): void {
+    this.recruiterService.getRecruiters(1, 100).subscribe({
+      next: (result) => {
+        this.recruiters = result.items;
+      },
+    });
   }
 
   loadCompanies(): void {
@@ -118,5 +130,20 @@ export class Interviews implements OnInit {
           this.errorMessage = 'Unable to create interview.';
         },
       });
+  }
+
+  deleteInterview(id: number): void {
+    const confirmed = confirm('Are you sure you want to delete this interview?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.interviewService.deleteInterview(id).subscribe({
+      next: () => this.loadInterviews(),
+      error: () => {
+        this.errorMessage = 'Unable to delete interview.';
+      },
+    });
   }
 }

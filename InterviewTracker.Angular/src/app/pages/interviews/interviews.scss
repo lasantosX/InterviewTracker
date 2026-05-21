@@ -184,3 +184,17 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+.danger-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.danger-button:hover {
+  background: #b91c1c;
+}
