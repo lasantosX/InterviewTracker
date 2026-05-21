@@ -1,0 +1,18 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>InterviewTracker</h1>
+    <p>Sign in to manage your interview pipeline</p>
+
+    <label>Username</label>
+    <input type="text" [(ngModel)]="username" />
+
+    <label>Password</label>
+    <input type="password" [(ngModel)]="password" />
+
+    <button type="button" (click)="login()">Login</button>
+
+    @if (errorMessage) {
+      <div class="error">{{ errorMessage }}</div>
+    }
+  </div>
+</div>
