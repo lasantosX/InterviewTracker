@@ -77,12 +77,26 @@ public class InterviewsControllerTests
 
         mockService
             .Setup(x => x.GetInterviewsAsync(It.IsAny<InterviewFilterRequest>()))
-            .ReturnsAsync(new PagedResult<Interview>
+            .ReturnsAsync(new PagedResult<InterviewListItemResponse>
             {
-                Items = new List<Interview>
+                Items = new List<InterviewListItemResponse>
                 {
-                new Interview { Id = 1, RoleTitle = "Senior .NET Developer" },
-                new Interview { Id = 2, RoleTitle = "Backend Developer" }
+            new InterviewListItemResponse
+            {
+                Id = 1,
+                RoleTitle = "Senior .NET Developer",
+                Status = "Applied",
+                CompanyId = 1,
+                CompanyName = "Demo Company"
+            },
+            new InterviewListItemResponse
+            {
+                Id = 2,
+                RoleTitle = "Backend Developer",
+                Status = "Technical Interview",
+                CompanyId = 1,
+                CompanyName = "Demo Company"
+            }
                 },
                 PageNumber = 1,
                 PageSize = 10,
@@ -98,7 +112,7 @@ public class InterviewsControllerTests
         });
 
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var pagedResult = Assert.IsType<PagedResult<Interview>>(okResult.Value);
+        var pagedResult = Assert.IsType<PagedResult<InterviewListItemResponse>>(okResult.Value);
 
         Assert.Equal(2, pagedResult.TotalCount);
         Assert.Equal(2, pagedResult.Items.Count());
