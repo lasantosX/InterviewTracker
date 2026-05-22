@@ -5,7 +5,13 @@
       <p>Track applications, interviews, offers, and rejections</p>
     </div>
 
-    <button type="button" class="primary-button" (click)="toggleCreateForm()">Add Interview</button>
+    <div>
+      <button type="button" class="secondary-button" (click)="loadInterviews()">Refresh</button>
+
+      <button type="button" class="primary-button" (click)="toggleCreateForm()">
+        Add Interview
+      </button>
+    </div>
   </div>
 
   @if (showCreateForm) {
@@ -177,7 +183,9 @@
             <td>{{ interview.companyName || '-' }}</td>
             <td>{{ interview.recruiterName || '-' }}</td>
             <td>
-              <span class="badge">{{ interview.status }}</span>
+              <span class="badge" [ngClass]="getStatusClass(interview.status)">
+                {{ interview.status }}
+              </span>
             </td>
             <td>${{ interview.expectedSalary || 0 }}</td>
             <td>

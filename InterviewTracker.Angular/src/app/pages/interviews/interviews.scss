@@ -234,3 +234,33 @@ td .secondary-button {
 .delete-button:hover {
   background: #b91c1c;
 }
+
+.status-applied {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-screen {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-technical {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-offer {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.header > div:last-child {
+  display: flex;
+  gap: 12px;
+}

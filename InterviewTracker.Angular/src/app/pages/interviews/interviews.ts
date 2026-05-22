@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Interview, InterviewService } from '../../services/interview';
-import { DatePipe } from '@angular/common';
 import { Company, CompanyService } from '../../services/company';
 import { Recruiter, RecruiterService } from '../../services/recruiter';
+import { NgClass, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-interviews',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, NgClass],
   templateUrl: './interviews.html',
   styleUrl: './interviews.scss',
 })
@@ -201,5 +201,22 @@ export class Interviews implements OnInit {
           this.errorMessage = 'Unable to update interview.';
         },
       });
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'Applied':
+        return 'status-applied';
+      case 'Recruiter Screen':
+        return 'status-screen';
+      case 'Technical Interview':
+        return 'status-technical';
+      case 'Offer':
+        return 'status-offer';
+      case 'Rejected':
+        return 'status-rejected';
+      default:
+        return 'status-default';
+    }
   }
 }
