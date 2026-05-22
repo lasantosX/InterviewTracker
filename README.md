@@ -156,3 +156,17 @@ Sample request:
   "username": "admin",
   "password": "password"
 }
+
+## Angular Frontend
+
+The project includes an Angular frontend with:
+
+- JWT login
+- Protected routes
+- HTTP interceptor
+- Dashboard cards
+- Interviews table
+- Filtering
+- Pagination
+- Create, update, and delete interview actions
+- Status badge colors
