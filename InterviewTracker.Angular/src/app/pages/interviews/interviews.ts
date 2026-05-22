@@ -145,7 +145,7 @@ export class Interviews implements OnInit {
   }
 
   deleteInterview(id: number): void {
-    const confirmed = confirm('Are you sure you want to delete this interview?');
+    const confirmed = confirm('Delete this interview?\n\nThis action cannot be undone');
 
     if (!confirmed) {
       return;

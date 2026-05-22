@@ -18,6 +18,18 @@ export interface PagedResult<T> {
   totalPages: number;
 }
 
+export interface CreateRecruiterRequest {
+  fullName: string;
+  email?: string;
+  linkedInUrl?: string;
+}
+
+export interface UpdateRecruiterRequest {
+  fullName: string;
+  email?: string;
+  linkedInUrl?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,5 +42,17 @@ export class RecruiterService {
     const params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
 
     return this.http.get<PagedResult<Recruiter>>(this.apiUrl, { params });
+  }
+
+  createRecruiter(request: CreateRecruiterRequest): Observable<Recruiter> {
+    return this.http.post<Recruiter>(this.apiUrl, request);
+  }
+
+  updateRecruiter(id: number, request: UpdateRecruiterRequest): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, request);
+  }
+
+  deleteRecruiter(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -18,6 +18,18 @@ export interface PagedResult<T> {
   totalPages: number;
 }
 
+export interface CreateCompanyRequest {
+  name: string;
+  website?: string;
+  location?: string;
+}
+
+export interface UpdateCompanyRequest {
+  name: string;
+  website?: string;
+  location?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,5 +42,17 @@ export class CompanyService {
     const params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
 
     return this.http.get<PagedResult<Company>>(this.apiUrl, { params });
+  }
+
+  createCompany(company: CreateCompanyRequest): Observable<Company> {
+    return this.http.post<Company>(this.apiUrl, company);
+  }
+
+  updateCompany(id: number, company: UpdateCompanyRequest): Observable<Company> {
+    return this.http.put<Company>(`${this.apiUrl}/${id}`, company);
+  }
+
+  deleteCompany(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
