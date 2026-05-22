@@ -1,6 +1,7 @@
 <div class="login-page">
   <div class="login-card">
-    <h1>InterviewTracker</h1>
+    <div class="brand">Interview<span>Tracker</span></div>
+
     <p>Sign in to manage your interview pipeline</p>
 
     <label>Username</label>
@@ -9,7 +10,7 @@
     <label>Password</label>
     <input type="password" [(ngModel)]="password" />
 
-    <button type="button" (click)="login()">Login</button>
+    <button type="button" (click)="login()">Sign in</button>
 
     @if (errorMessage) {
       <div class="error">{{ errorMessage }}</div>

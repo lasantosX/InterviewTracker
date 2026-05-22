@@ -4,7 +4,69 @@
       <h1>Recruiters</h1>
       <p>Manage recruiter contacts connected to your interviews</p>
     </div>
+
+    <button type="button" class="primary-button" (click)="toggleCreateForm()">Add Recruiter</button>
   </div>
+
+  @if (showCreateForm) {
+    <div class="form-card">
+      <h2>Add Recruiter</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="newRecruiter.fullName" />
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" [(ngModel)]="newRecruiter.email" />
+        </div>
+
+        <div>
+          <label>LinkedIn URL</label>
+          <input type="text" [(ngModel)]="newRecruiter.linkedInUrl" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="toggleCreateForm()">Cancel</button>
+        <button type="button" class="primary-button" (click)="createRecruiter()">
+          Save Recruiter
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (editingRecruiterId) {
+    <div class="form-card">
+      <h2>Edit Recruiter</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Full Name</label>
+          <input type="text" [(ngModel)]="editRecruiter.fullName" />
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" [(ngModel)]="editRecruiter.email" />
+        </div>
+
+        <div>
+          <label>LinkedIn URL</label>
+          <input type="text" [(ngModel)]="editRecruiter.linkedInUrl" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+        <button type="button" class="primary-button" (click)="updateRecruiter()">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  }
 
   @if (isLoading) {
     <div class="message">Loading recruiters...</div>
@@ -22,6 +84,7 @@
           <th>Email</th>
           <th>LinkedIn</th>
           <th>Created At</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -38,6 +101,23 @@
               }
             </td>
             <td>{{ recruiter.createdAt | date: 'MMM d, y' }}</td>
+            <td>
+              <button
+                type="button"
+                class="action-button edit-button"
+                (click)="startEdit(recruiter)"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="action-button delete-button"
+                (click)="deleteRecruiter(recruiter.id)"
+              >
+                Delete
+              </button>
+            </td>
           </tr>
         }
       </tbody>

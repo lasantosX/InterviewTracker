@@ -1,59 +1,68 @@
-# InterviewTrackerAngular
+# InterviewTracker Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+Angular frontend for the InterviewTracker full-stack application.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- JWT login
+- Protected routes with auth guard
+- HTTP interceptor for Bearer tokens
+- Dashboard summary cards
+- Companies CRUD
+- Recruiters CRUD
+- Interviews CRUD
+- Interview status filtering
+- Pagination
+- Status badge colors
+- Responsive admin layout with sidebar navigation
+- Unit tests with Vitest
 
-```bash
+## Tech Stack
+
+- Angular
+- TypeScript
+- SCSS
+- Angular Router
+- Angular HttpClient
+- Vitest
+
+## Backend API
+
+This frontend consumes the InterviewTracker ASP.NET Core API.
+
+Default API URL:
+
+```ts
+https://localhost:7185/api
+Run Locally
+
+Install dependencies:
+
+npm install
+
+Start Angular:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open:
 
-## Code scaffolding
+http://localhost:4200
+Login
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Demo credentials:
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
+Username: admin
+Password: password
+Run Tests
 ng test
-```
+Build
+ng build
+Main Pages
+/login
+/dashboard
+/interviews
+/companies
+/recruiters
+Project Goal
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This frontend demonstrates an enterprise-style Angular application connected to a secured ASP.NET Core backend using JWT authentication, protected routes, reusable services, CRUD screens, pagination, filtering, and unit testing.

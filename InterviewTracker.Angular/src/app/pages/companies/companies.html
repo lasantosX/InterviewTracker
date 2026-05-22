@@ -4,7 +4,67 @@
       <h1>Companies</h1>
       <p>Manage companies in your interview pipeline</p>
     </div>
+
+    <button type="button" class="primary-button" (click)="toggleCreateForm()">
+      Add Company
+    </button>
   </div>
+
+  @if (showCreateForm) {
+    <div class="form-card">
+      <h2>Add Company</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Name</label>
+          <input type="text" [(ngModel)]="newCompany.name" />
+        </div>
+
+        <div>
+          <label>Website</label>
+          <input type="text" [(ngModel)]="newCompany.website" />
+        </div>
+
+        <div>
+          <label>Location</label>
+          <input type="text" [(ngModel)]="newCompany.location" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="toggleCreateForm()">Cancel</button>
+        <button type="button" class="primary-button" (click)="createCompany()">Save Company</button>
+      </div>
+    </div>
+  }
+
+  @if (editingCompanyId) {
+    <div class="form-card">
+      <h2>Edit Company</h2>
+
+      <div class="form-grid">
+        <div>
+          <label>Name</label>
+          <input type="text" [(ngModel)]="editCompany.name" />
+        </div>
+
+        <div>
+          <label>Website</label>
+          <input type="text" [(ngModel)]="editCompany.website" />
+        </div>
+
+        <div>
+          <label>Location</label>
+          <input type="text" [(ngModel)]="editCompany.location" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-button" (click)="cancelEdit()">Cancel</button>
+        <button type="button" class="primary-button" (click)="updateCompany()">Save Changes</button>
+      </div>
+    </div>
+  }
 
   @if (isLoading) {
     <div class="message">Loading companies...</div>
@@ -22,6 +82,7 @@
           <th>Website</th>
           <th>Location</th>
           <th>Created At</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -31,7 +92,16 @@
             <td>{{ company.name }}</td>
             <td>{{ company.website || '-' }}</td>
             <td>{{ company.location || '-' }}</td>
-            <td>{{ company.createdAt | date: 'MMM d, y' }}</td>
+            <td>{{ company.createdAt | date:'MMM d, y' }}</td>
+            <td>
+              <button type="button" class="action-button edit-button" (click)="startEdit(company)">
+                Edit
+              </button>
+
+              <button type="button" class="action-button delete-button" (click)="deleteCompany(company.id)">
+                Delete
+              </button>
+            </td>
           </tr>
         }
       </tbody>
@@ -43,10 +113,14 @@
   </div>
 
   <div class="pagination">
-    <button type="button" (click)="previousPage()" [disabled]="pageNumber === 1">Previous</button>
+    <button type="button" (click)="previousPage()" [disabled]="pageNumber === 1">
+      Previous
+    </button>
 
     <span>Page {{ pageNumber }} of {{ totalPages || 1 }}</span>
 
-    <button type="button" (click)="nextPage()" [disabled]="pageNumber >= totalPages">Next</button>
+    <button type="button" (click)="nextPage()" [disabled]="pageNumber >= totalPages">
+      Next
+    </button>
   </div>
 </div>
